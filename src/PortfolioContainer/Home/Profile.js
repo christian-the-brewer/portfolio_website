@@ -1,5 +1,6 @@
 import React from "react";
 import Typical from "react-typical";
+import "./Profile.css"
 
 export default function Profile() {
     return (
@@ -7,6 +8,7 @@ export default function Profile() {
             <div className="profile-parent">
                 <div className="profile-details">
                     <div className="colz">
+                        <div className="colz-icon">
                         <a href="https://www.facebook.com/christian.brewer2/">
                             <i className="fa fa-facebook-square"></i>
                         </a>
@@ -19,6 +21,8 @@ export default function Profile() {
                         <a href="#">
                             <i className="fa fa-twitter-square"></i>
                         </a>
+                        </div>
+                        
                     </div>
                     <div className="profile-details-name">
                         <span className="primary-text">
@@ -46,20 +50,25 @@ export default function Profile() {
                                 />
                             </h1>
                             <span className="profile-role-tagline">
-                                I can code
+                                Highly motivated software engineer with skill in web development and python programming
                             </span>
                         </span> 
                     </div>
                     <div className="profile-options">
-                        <button className="btn-primaryn-btn">
+                        <button className="btn primary-btn">
                             {" "}
                             Hire Me{" "}
                         </button>
-                        <a href="#" download="Christian Brewer Resume">
+                        <a href="christian_brewer_cv_09_22-1.pdf" download="Christian Brewer Resume">
                             <button className="btn highlighted-btn">
                                 Download Resume
                             </button>
                         </a>
+                    </div>
+                </div>
+                <div className="profile-picture">
+                    <div className="profile-picture-background">
+
                     </div>
                 </div>
             </div>
