@@ -1,0 +1,76 @@
+import { TOTAL_SCREENS } from "./commonUtilities";
+import { Subject } from "rxjs";
+import { type } from "@testing-library/user-event/dist/type";
+
+export default class ScrollService{
+    static scrollHandler = new ScrollService();
+
+    static currentScreenBroadCaster = new Subject()
+    static currentScreenFadeIn = new Subject()
+
+    constructor(){
+        window.addEventListener("scroll", this.checkCurrentScreenUnderViewport);
+    }
+
+    scrollToHireMe = () => {
+        let contactMeScreen = document.getElementById("Contact Me")
+        if(!contactMeScreen) return;
+        contactMeScreen.scrollIntoView({behavior: "smooth"})
+    }
+
+    scrollToHome = () => {
+        let homeScreen = document.getElementById("Contact Me")
+        if(!homeScreen) return;
+        homeScreen.scrollIntoView({behavior: "smooth"})
+    }
+
+    isElementInView = (element, type) => {
+        let rec = element.getBoundingClientRect();
+        let elementTop = rec.top;
+        let elementBottom = rec.Bottom;
+
+        let partiallyVisible = elementTop < window.innerHeight && elementBottom >= 0;
+
+        let completelyVisible = elementTop >= 0 && elementBottom <= window.innerHeight;
+
+        switch(type){
+            case "partial":
+                return partiallyVisible;
+
+            case "complete":
+                return completelyVisible
+                default:
+                    return false
+        }
+    }
+
+    checkCurrentScreenUnderViewport = (event) => {
+        if (!event || Object.keys(event).length < 1)
+        return;
+        for (let screen of TOTAL_SCREENS){
+            let screenFromDom = document.getElementById(screen.screen_name);
+            if(!screenFromDom)
+            continue
+
+            let completelyVisible = this.isElementInView(screenFromDom, "complete")
+            let partiallyVisible = this.isElementInView(screenFromDom, "partial")
+
+            if(completelyVisible || partiallyVisible){
+                if (partiallyVisible && !screen.alreadyRendered){
+                    ScrollService.currentScreenFadeIn.next({
+                        fadeInScreen: screen.screen_name
+                    });
+                    screen["alreadyRendered"] = true;
+                    break;
+                }
+                if (completelyVisible){
+                    ScrollService.currentScreenBroadCaster.next({
+                        screenInView: screen.screen_name,
+                    });
+                    break;
+                }
+            }
+        }
+    }
+
+}
